@@ -12,12 +12,12 @@ export default function Cars() {
   }, []);
 
   const loadCars = async () => {
-    const result = await axios.get("http://localhost:8080/api/cars");
+    const result = await axios.get("http://localhost:8080/api/car");
     setCars(result.data);
   };
 
   const deleteCar = async () => {
-    await axios.delete("http://localhost:8080/api/cars/delete");
+    await axios.delete("http://localhost:8080/api/car");
     loadCars();
   };
 

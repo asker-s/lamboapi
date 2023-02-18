@@ -18,7 +18,7 @@ export default function AssignCar() {
   const onSubmit = async (e) => {
     e.preventDefault();
     await axios.put(
-      `http://localhost:8080/api/owner/${ownerId}/garages/${garageId}/cars/${carId}/assign`
+      `http://localhost:8080/api/owner/${ownerId}/garages/${garageId}/cars/${carId}`
     );
     navigate(`/viewgarages/${ownerId}/${garageId}/cars`);
   };

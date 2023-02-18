@@ -13,7 +13,7 @@ export default function ViewGarages() {
 
   const loadGarages = async () => {
     const result = await axios.get(
-      `http://localhost:8080/api/owner/${id}/garages`
+      `http://localhost:8080/api/owner/${id}/garage`
     );
     setGarages(result.data);
   };

@@ -18,7 +18,7 @@ export default function AddOwner() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:8080/api/owner/create", owner);
+    await axios.post("http://localhost:8080/api/owner", owner);
     navigate("/");
   };
 

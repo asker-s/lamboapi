@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/owner")
 @CrossOrigin("http://localhost:3000")
 public class OwnerController {
 
@@ -24,34 +24,33 @@ public class OwnerController {
     }
 
     //works fine, frontend implemented
-    @GetMapping("owner")
-    public List<OwnerDto> getOwners(
-    ) {
+    @GetMapping("")
+    public List<OwnerDto> getOwners() {
         return ownerService.getAllOwners();
     }
 
     //works fine, frontend implemented
-    @GetMapping("owner/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<OwnerDto> ownerDetail(@PathVariable int id) {
         return ResponseEntity.ok(ownerService.getOwnerByID(id));
     }
 
     //works fine, frontend implemented
-    @PostMapping("owner/create")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<OwnerDto> createOwner(@RequestBody OwnerDto ownerDto) {
         return new ResponseEntity<>(ownerService.createOwner(ownerDto), HttpStatus.CREATED);
     }
 
     //works fine, frontend implemented
-    @PutMapping("owner/{id}/update")
+    @PutMapping("/{id}")
     public ResponseEntity<OwnerDto> updateOwner(@RequestBody OwnerDto ownerDto, @PathVariable("id") int ownerId) {
         OwnerDto response = ownerService.updateOwner(ownerDto, ownerId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     //works fine, frontend implemented
-    @DeleteMapping("owner/{id}/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOwner(@PathVariable("id") int ownerId) {
         ownerService.deleteOwnerByID(ownerId);
         return new ResponseEntity<>("Owner deleted", HttpStatus.OK);

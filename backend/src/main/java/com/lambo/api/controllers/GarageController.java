@@ -26,13 +26,13 @@ public class GarageController {
     }
 
     //works fine, frontend implemented
-    @GetMapping("owner/{ownerId}/garages")
+    @GetMapping("owner/{ownerId}/garage")
     public List<GarageDto> getGaragesByOwnerId(@PathVariable(value = "ownerId") int ownerId) {
         return garageService.getGaragesByOwnerId(ownerId);
     }
 
     //works fine, frontend implemented
-    @PutMapping("owner/{ownerId}/garages/{garageId}/cars/{carId}/assign")
+    @PutMapping("owner/{ownerId}/garages/{garageId}/cars/{carId}")
     public ResponseEntity<GarageDto> assignCarToGarage(@PathVariable(value = "ownerId") int ownerId,
                                                     @PathVariable(value = "garageId") int garageId,
                                                     @PathVariable(value = "carId") int carId) {

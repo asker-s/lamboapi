@@ -17,7 +17,7 @@ export default function Home() {
   };
 
   const deleteOwner = async (id) => {
-    await axios.delete(`http://localhost:8080/api/owner/${id}/delete`);
+    await axios.delete(`http://localhost:8080/api/owner/${id}`);
     loadOwners();
   };
 

@@ -24,14 +24,12 @@ export default function EditOwner() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`http://localhost:8080/api/owner/${id}/update`, owner);
+    await axios.put(`http://localhost:8080/api/owner/${id}`, owner);
     navigate("/");
   };
 
   const loadOwner = async () => {
-    const result = await axios.get(
-      `http://localhost:8080/api/owner/${id}/update`
-    );
+    const result = await axios.get(`http://localhost:8080/api/owner/${id}`);
     setOwner(result.data);
   };
 

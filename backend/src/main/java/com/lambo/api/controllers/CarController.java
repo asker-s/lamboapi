@@ -21,14 +21,14 @@ public class CarController {
     public CarController(CarService carService) { this.carService = carService; }
 
     //works fine, frontend completed
-    @PostMapping("car/create")
+    @PostMapping("car")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CarDto> createCar(@RequestBody CarDto carDto) {
         return new ResponseEntity<>(carService.createCar(carDto), HttpStatus.CREATED);
     }
 
     //works fine, frontend completed
-    @GetMapping("cars")
+    @GetMapping("car")
     public List<CarDto> getAllCars(
     ) {
         return carService.getAllCars();
@@ -50,14 +50,14 @@ public class CarController {
     }
 
     //works fine, frontend completed
-    @DeleteMapping("cars/delete")
+    @DeleteMapping("car")
     public ResponseEntity<String> deleteAllCars() {
         carService.deleteAllCars();
         return new ResponseEntity<>("All cars have been deleted", HttpStatus.OK);
     }
 
     //works fine, frontend implemented
-    @PutMapping("cars/{carId}/garages/{garageId}/assign")
+    @PutMapping("car/{carId}/garages/{garageId}")
     public ResponseEntity<CarDto> assignGarageToCar(@PathVariable(value = "carId") int carId,
                                                        @PathVariable(value = "garageId") int garageId) {
         return new ResponseEntity<>(carService.assignGarageToCar(carId, garageId), HttpStatus.OK);

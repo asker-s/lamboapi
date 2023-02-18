@@ -18,7 +18,7 @@ export default function AddCar() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:8080/api/car/create", car);
+    await axios.post("http://localhost:8080/api/car", car);
     navigate("/cars");
   };
 
