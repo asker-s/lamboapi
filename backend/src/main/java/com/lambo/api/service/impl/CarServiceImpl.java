@@ -102,7 +102,7 @@ public class CarServiceImpl implements CarService {
         return cars.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    //works fine
+    //works finez
     @Override
     public void deleteAllCars() {
         List<Garage> garages = garageRepository.findAll();

@@ -75,6 +75,8 @@ A new garage can be assigned to a car and respectively the car will be added to 
 ![Image](images/AssignGarage1.PNG)
 
 
+swagger url: http://localhost:8080/api/docs
+
 Asgarkhan Sadigli.
 
 

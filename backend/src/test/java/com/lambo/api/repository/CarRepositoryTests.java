@@ -1,7 +1,6 @@
 package com.lambo.api.repository;
 
 import com.lambo.api.models.Car;
-import com.lambo.api.models.Garage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
