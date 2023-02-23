@@ -81,7 +81,7 @@ public class GarageServiceTests {
         when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
         when(garageRepository.save(Mockito.any(Garage.class))).thenReturn(garage);
 
-        GarageDto savedGarage = garageService.createGarage(garage.getId(), garageDto);
+        GarageDto savedGarage = garageService.createGarage(owner.getId(), garageDto);
 
         Assertions.assertThat(savedGarage).isNotNull();
     }

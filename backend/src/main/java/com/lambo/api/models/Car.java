@@ -1,5 +1,6 @@
 package com.lambo.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,8 @@ public class Car {
     private String brand;
     private String model;
 
-    @ManyToMany(mappedBy = "cars", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "cars", fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Set<Garage> garages = new HashSet<>();
 
     public void addGarage(Garage garage) {

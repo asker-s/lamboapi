@@ -1,5 +1,6 @@
 package com.lambo.api.service.impl;
 
+import com.lambo.api.dto.CarDto;
 import com.lambo.api.dto.GarageDto;
 import com.lambo.api.exceptions.CarNotFoundException;
 import com.lambo.api.exceptions.GarageNotFoundException;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -119,6 +122,14 @@ public class GarageServiceImpl implements GarageService {
         garageDto.setId(garage.getId());
         garageDto.setName(garage.getName());
         garageDto.setLocation(garage.getLocation());
+        garageDto.setCars(Optional.ofNullable(garage.getCars()).orElse(new HashSet<>()).stream().map(car -> {
+            CarDto carDto = new CarDto();
+            carDto.setId(car.getId());
+            carDto.setBrand(car.getBrand());
+            carDto.setModel(car.getModel());
+
+            return carDto;
+        }).collect(Collectors.toSet()));
         return garageDto;
     }
 
@@ -127,6 +138,13 @@ public class GarageServiceImpl implements GarageService {
         garage.setId(garageDto.getId());
         garage.setName(garageDto.getName());
         garage.setLocation(garageDto.getLocation());
+        garage.setCars(Optional.ofNullable(garageDto.getCars()).orElse(new HashSet<>()).stream().map(carDto -> {
+            Car car = new Car();
+            car.setId(carDto.getId());
+            car.setBrand(carDto.getBrand());
+            car.setModel(carDto.getModel());
+            return car;
+        }).collect(Collectors.toSet()));
         return garage;
     }
 }

@@ -13,6 +13,7 @@ import com.lambo.api.repository.GarageRepository;
 import com.lambo.api.repository.OwnerRepository;
 import com.lambo.api.service.CarService;
 import com.lambo.api.service.GarageService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,7 @@ public class CarControllerTests {
     public void testCreateCar() throws Exception {
         final ObjectMapper objectMapper = new ObjectMapper();
         final CarDto carDto = new CarDto();
+        carDto.setId(1);
         carDto.setBrand("Brand 1");
         carDto.setModel("Model 1");
 
@@ -96,9 +98,9 @@ public class CarControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(carDto)))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.CREATED.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
                     CarDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), CarDto.class);
-                    assertThat(carDto.equals(responseBody));
+                    Assertions.assertThat(carDto).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -112,10 +114,10 @@ public class CarControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/api/car")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     List<CarDto> responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), new TypeReference<List<CarDto>>() {
                     });
-                    assertThat(allCars.equals(responseBody));
+                    Assertions.assertThat(allCars).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -129,9 +131,9 @@ public class CarControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/api/owner/1/garages/1/cars")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     List<CarDto> responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), new TypeReference<List<CarDto>>() {});
-                    assertThat(allCars.equals(responseBody));
+                    Assertions.assertThat(allCars).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -143,7 +145,7 @@ public class CarControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/api/owner/1/garages/1/cars/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                 })
                 .andDo(print());
     }
@@ -154,7 +156,7 @@ public class CarControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/api/car")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                 })
                 .andDo(print());
     }
@@ -167,9 +169,7 @@ public class CarControllerTests {
         carDto.setBrand("Brand");
         carDto.setModel("Model");
 
-        final GarageDto garageDto = new GarageDto();
-        garageDto.setId(1);
-
+        GarageDto garageDto = new GarageDto(1, null, null, new HashSet<>());
         Set<GarageDto> garageDtoSet = new HashSet<>();
         garageDtoSet.add(garageDto);
 
@@ -180,9 +180,9 @@ public class CarControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/api/car/1/garages/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     CarDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), CarDto.class);
-                    assertThat(carDto.equals(responseBody));
+                    Assertions.assertThat(carDto).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }

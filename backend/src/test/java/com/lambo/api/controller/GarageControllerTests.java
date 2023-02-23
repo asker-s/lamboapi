@@ -13,6 +13,7 @@ import com.lambo.api.repository.CarRepository;
 import com.lambo.api.repository.GarageRepository;
 import com.lambo.api.repository.OwnerRepository;
 import com.lambo.api.service.GarageService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -92,7 +95,7 @@ public class GarageControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(garage)))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.CREATED.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
                 })
                 .andDo(print());
     }
@@ -105,9 +108,9 @@ public class GarageControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/api/owner/" + owner.getId() + "/garage")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     List<GarageDto> responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), new TypeReference<List<GarageDto>>() {});
-                    assertThat(allGarages.equals(responseBody));
+                    Assertions.assertThat(allGarages).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -119,14 +122,21 @@ public class GarageControllerTests {
         garageDto.setId(1);
         garageDto.setName("Name");
         garageDto.setLocation("Location");
+
+        CarDto carDto = new CarDto(1, null, null, new HashSet<>());
+        Set<CarDto> carDtoSet = new HashSet<>();
+        carDtoSet.add(carDto);
+
+        garageDto.setCars(carDtoSet);
+
         final ObjectMapper objectMapper = new ObjectMapper();
 
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.PUT, "/api/owner/" + owner.getId() + "/garages/" + garage.getId() + "/cars/" + car.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     GarageDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), GarageDto.class);
-                    assertThat(garageDto.equals(responseBody));
+                    Assertions.assertThat(garageDto).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -139,9 +149,9 @@ public class GarageControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/api/owner/" + owner.getId() + "/garages/" + garage.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     GarageDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), GarageDto.class);
-                    assertThat(garageDto.equals(responseBody));
+                    Assertions.assertThat(garageDto).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -152,7 +162,7 @@ public class GarageControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/api/owner/" + owner.getId() + "/garages/" + garage.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                 })
                 .andDo(print());
     }
@@ -166,9 +176,9 @@ public class GarageControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET,"/api/cars/" + car.getId() + "/garages")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     List<GarageDto> responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), new TypeReference<List<GarageDto>>() {});
-                    assertThat(allGarages.equals(responseBody));
+                    Assertions.assertThat(allGarages).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -185,4 +195,5 @@ public class GarageControllerTests {
         }
         return result;
     }
+
 }

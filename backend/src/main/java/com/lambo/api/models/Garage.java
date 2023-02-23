@@ -1,15 +1,14 @@
 package com.lambo.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = "cars")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -25,12 +24,13 @@ public class Garage {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-                name = "garage_car",
-                joinColumns = @JoinColumn(name = "garage_id", referencedColumnName = "id"),
-                inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id")
+            name = "garage_car",
+            joinColumns = @JoinColumn(name = "garage_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "car_id", referencedColumnName = "id")
     )
+    @ToString.Exclude
     private Set<Car> cars = new HashSet<>();
 
     public void addCar(Car car) {

@@ -21,7 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -102,7 +104,7 @@ public class CarServiceImpl implements CarService {
         return cars.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    //works finez
+    //works fine
     @Override
     public void deleteAllCars() {
         List<Garage> garages = garageRepository.findAll();
@@ -136,6 +138,14 @@ public class CarServiceImpl implements CarService {
         carDto.setId(car.getId());
         carDto.setBrand(car.getBrand());
         carDto.setModel(car.getModel());
+        carDto.setGarageSet(Optional.ofNullable(car.getGarages()).orElse(new HashSet<>()).stream().map(garage -> {
+            GarageDto garageDto = new GarageDto();
+            garageDto.setId(garage.getId());
+            garageDto.setName(garage.getName());
+            garageDto.setLocation(garage.getLocation());
+
+            return garageDto;
+        }).collect(Collectors.toSet()));
         return carDto;
     }
 
@@ -144,6 +154,13 @@ public class CarServiceImpl implements CarService {
         car.setId(carDto.getId());
         car.setBrand(carDto.getBrand());
         car.setModel(carDto.getModel());
+        car.setGarages(Optional.ofNullable(carDto.getGarageSet()).orElse(new HashSet<>()).stream().map(garageDto -> {
+            Garage garage = new Garage();
+            garage.setId(garageDto.getId());
+            garage.setName(garageDto.getName());
+            garage.setLocation(garageDto.getLocation());
+            return garage;
+        }).collect(Collectors.toSet()));
         return car;
     }
 }

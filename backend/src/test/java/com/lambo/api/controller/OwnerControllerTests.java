@@ -7,7 +7,9 @@ import com.lambo.api.controllers.OwnerController;
 import com.lambo.api.dto.GarageDto;
 import com.lambo.api.dto.OwnerDto;
 import com.lambo.api.models.Owner;
+import com.lambo.api.repository.OwnerRepository;
 import com.lambo.api.service.OwnerService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,8 @@ public class OwnerControllerTests {
 
     @Autowired
     private OwnerController ownerController;
+    @Autowired
+    private OwnerRepository ownerRepository;
 
     @BeforeEach
     public void setUp() {
@@ -66,9 +70,9 @@ public class OwnerControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/api/owner")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     List<OwnerDto> responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), new TypeReference<List<OwnerDto>>() {});
-                    assertThat(allOwners.equals(responseBody));
+                    Assertions.assertThat(allOwners).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -81,9 +85,10 @@ public class OwnerControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/api/owner/" + owner.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     OwnerDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), OwnerDto.class);
-                    assertThat(ownerDto.equals(responseBody));
+                    System.out.println(ownerDto.getId() + "\n" + responseBody.getId());
+                    Assertions.assertThat(ownerDto).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -91,14 +96,15 @@ public class OwnerControllerTests {
     @Test
     public void testCreateOwner() throws Exception {
         final ObjectMapper objectMapper = new ObjectMapper();
+        final OwnerDto newOwner = new OwnerDto(2, "Second", "Surname");
 
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/api/owner")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(owner)))
+                        .content(objectMapper.writeValueAsString(newOwner)))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
                     OwnerDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), OwnerDto.class);
-                    assertThat(owner.equals(responseBody));
+                    Assertions.assertThat(newOwner).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -111,9 +117,9 @@ public class OwnerControllerTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(owner)))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                     OwnerDto responseBody = objectMapper.readValue(result.getResponse().getContentAsByteArray(), OwnerDto.class);
-                    assertThat(owner.equals(responseBody));
+                    Assertions.assertThat(owner).isEqualTo(responseBody);
                 })
                 .andDo(print());
     }
@@ -123,7 +129,7 @@ public class OwnerControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.DELETE, "/api/owner/" + owner.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(result -> {
-                    assertThat(result.getResponse().getStatus() == HttpStatus.OK.value());
+                    Assertions.assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
                 })
                 .andDo(print());
     }
