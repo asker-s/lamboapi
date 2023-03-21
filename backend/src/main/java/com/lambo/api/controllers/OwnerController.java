@@ -51,7 +51,7 @@ public class OwnerController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(operationId = "createOwner",
             summary = "Creates a new owner")
-    @ApiResponse(responseCode = "201", description = "The car is owner",
+    @ApiResponse(responseCode = "201", description = "Owner has been created",
             content = @Content(schema = @Schema(implementation = OwnerDto.class))
     )
     public ResponseEntity<OwnerDto> createOwner(@RequestBody OwnerDto ownerDto) {
@@ -65,7 +65,7 @@ public class OwnerController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(schema = @Schema(implementation = OwnerDto.class))
             )
-    )
+    )   
     @PutMapping("/{id}")
     public ResponseEntity<OwnerDto> updateOwner(@RequestBody OwnerDto ownerDto, @PathVariable("id") int ownerId) {
         OwnerDto response = ownerService.updateOwner(ownerDto, ownerId);

@@ -17,10 +17,22 @@ export default function AssignGarage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(
-      `http://localhost:8080/api/car/${carId}/garages/${garageId}`
-    );
-    navigate("/cars");
+
+    await axios
+      .get(`http://localhost:8080/api/car/${carId}/garages/${garageId}`)
+      .then((res) => alert("Car already has access to the garage"))
+      .catch(function (error) {
+        if (error.response.status === 404) {
+          console.log("Garage does not exist");
+          alert("Garage does not exist");
+          return;
+        } else if (error.response.status === 409) {
+          axios.put(
+            `http://localhost:8080/api/car/${carId}/garages/${garageId}`
+          );
+          navigate("/cars");
+        }
+      });
   };
 
   return (

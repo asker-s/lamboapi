@@ -1,10 +1,8 @@
 package com.lambo.api.service.impl;
 
-import com.lambo.api.dto.CarDto;
-import com.lambo.api.dto.CarResponse;
-import com.lambo.api.dto.GarageDto;
-import com.lambo.api.dto.OwnerResponse;
+import com.lambo.api.dto.*;
 import com.lambo.api.exceptions.CarNotFoundException;
+import com.lambo.api.exceptions.GarageExistsException;
 import com.lambo.api.exceptions.GarageNotFoundException;
 import com.lambo.api.exceptions.OwnerNotFoundException;
 import com.lambo.api.models.Car;
@@ -130,6 +128,19 @@ public class CarServiceImpl implements CarService {
         car.addGarage(garage);
         carRepository.save(car);
         garageRepository.save(garage);
+        return mapToDto(car);
+    }
+
+    @Override
+    public CarDto getGarageIfCarHasAccessTo(int carId, int garageId) {
+        Car car = carRepository.findById(carId).orElseThrow(() -> new CarNotFoundException("Car does not exist"));
+        Garage garage = garageRepository.findById(garageId).orElseThrow(() -> new GarageNotFoundException("Garage does not exist"));
+
+        if (!garage.getCars().contains(car)) {
+            //throw new RuntimeException("This car already has access to the garage");
+            throw new GarageExistsException("Garage does not have the access for the car");
+        }
+
         return mapToDto(car);
     }
 

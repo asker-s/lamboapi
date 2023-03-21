@@ -1,7 +1,12 @@
 package com.lambo.api.controllers;
 
 import com.lambo.api.dto.CarDto;
+import com.lambo.api.dto.GarageDto;
+import com.lambo.api.models.Garage;
 import com.lambo.api.service.CarService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
+import io.swagger.annotations.ResponseHeader;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -51,6 +56,11 @@ public class CarController {
     @GetMapping("car")
     public List<CarDto> getAllCars() {
         return carService.getAllCars();
+    }
+
+    @GetMapping("car/{carId}/garages/{garageId}")
+    public ResponseEntity<CarDto> getGarageIfCarHasAccessTo(@PathVariable int carId, @PathVariable int garageId) {
+        return ResponseEntity.ok(carService.getGarageIfCarHasAccessTo(carId, garageId));
     }
 
     @Operation(operationId = "getCarsByOwnerIdAndGarageId",

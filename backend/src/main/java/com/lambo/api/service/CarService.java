@@ -13,4 +13,5 @@ public interface CarService {
     List<CarDto> getAllCars();
     void deleteAllCars();
     CarDto assignGarageToCar (int carId, int garageId);
+    CarDto getGarageIfCarHasAccessTo(int carId, int garageId);
 }
